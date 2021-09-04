@@ -18,6 +18,7 @@ p {
 
 .toolbar {
   position: absolute;
+  padding: 0 .5em;
   top: 0;
   left: 0;
   right: 0;
@@ -34,7 +35,19 @@ p {
     font-family: Andale Mono, monospace;
   }
 }
-
+.switch-box{
+  // background-color: #efefef;
+  opacity: .7;
+  display: flex;
+  justify-content: space-between;
+  width: 20%;
+}
+.search-box{
+  opacity: .7;
+  display: flex;
+  // justify-content: space-between;
+  width: 20%;
+}
 
 
 .content {

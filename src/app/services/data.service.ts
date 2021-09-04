@@ -1,27 +1,40 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, tap } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
-import { IBlockRawUnit, Itransaction } from "../interfaces/block-chain";
+import { IConfiguration, IDelta } from "../interfaces/data.interface";
+import { DataStoreService } from './data-store.service';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import axios from 'axios';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BlockService {
+export class DataService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private dataStore: DataStoreService) {
   }
   private API = "https://blockchain.info/blocks?format=json";
-  private API1 = "https://blockchain.info/blocks/1573858800000?format=json";
-  private APIURL = "https://randomuser.me/api/";
-  private API2 = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,IOT&tsyms=USD";
-  private API3 = "https://min-api.cryptocompare.com/data/symbol/histoday?fsym=ETH&tsym=USD&limit=100";
-  private apiURL: string = 'https://jsonplaceholder.typicode.com/todos/1';
 
-  public fetchFakeData(): Observable<any> {
-    return this.http.get('/assets/data/data.json');
+  public fetchMockConfigData(): Observable<any> {
+    return this.http.get('/assets/data/mockConfigData.json');
   }
+
+  public fetchMockDeltaData(): Observable<any> {
+    return this.http.get('/assets/data/mockDeltaData.json');
+  }
+
+    public loadMockConfigData(): void {
+    this.http.get<IConfiguration[]>(`/assets/data/mockConfigData.json`).pipe(
+        tap(result => this.dataStore.allConfigurations.next(result))
+    ).subscribe();
+}
+
+    public loadMockDeltaData(): void {
+    this.http.get<IDelta[]>(`/assets/data/mockDeltaData.json`).pipe(
+        tap(result => this.dataStore.allDelta.next(result))
+    ).subscribe();
+}
   public loadBlockchainInfo() {
     // return this.http.jsonp<any>(this.API1, 'jsoncallback').pipe(
     //     tap(result => {
@@ -46,23 +59,23 @@ export class BlockService {
     //   console.log(response);
     // })
   }
-  public testDrive(){
-    return this.http.get<any>(`http://127.0.0.1:5000/api/v1/resources/drivers/all`).pipe(
-      catchError(this.handleError)
-    )
-  }
+//   public testDrive(){
+//     return this.http.get<any>(`http://127.0.0.1:5000/api/v1/resources/drivers/all`).pipe(
+//       catchError(this.handleError)
+//     )
+//   }
 
-  public loadBlockRawUnit(id: string) {
-    return this.http.get<IBlockRawUnit>(`https://blockchain.info/rawblock/${id}`).pipe(
-      catchError(this.handleError)
-    ).toPromise();
-  }
-  public loadTransaction(id: string) {
-    return this.http.get<Itransaction>(`https://blockchain.info/rawtx/${id}`).pipe(
-      catchError(this.handleError)
-    ).toPromise();
+//   public loadBlockRawUnit(id: string) {
+//     return this.http.get<IBlockRawUnit>(`https://blockchain.info/rawblock/${id}`).pipe(
+//       catchError(this.handleError)
+//     ).toPromise();
+//   }
+//   public loadTransaction(id: string) {
+//     return this.http.get<Itransaction>(`https://blockchain.info/rawtx/${id}`).pipe(
+//       catchError(this.handleError)
+//     ).toPromise();
 
-  }
+//   }
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

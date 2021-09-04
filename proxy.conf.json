@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "https://blockchain.info",
+      "target": "https://versioncontrol.info",
       "secure": false,
       "logLevel": "debug",
       "changeOrigin": true    
