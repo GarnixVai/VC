@@ -10,7 +10,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { catchError, distinctUntilChanged, filter, map, switchMap, switchMapTo, takeUntil, tap } from "rxjs/operators";
-import { ViewBlockRawUnitComponent } from "./../view-block-raw-unit/view-block-raw-unit.component";
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
 import { Subject, BehaviorSubject, Observable, combineLatest } from "rxjs";
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';

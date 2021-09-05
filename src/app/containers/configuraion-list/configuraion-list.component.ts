@@ -10,7 +10,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BlockService } from 'src/app/services/block.service';
 import { StringifyService } from 'src/app/services/stringify.service.ts.service';
 @Component({
   selector: 'app-configuraion-list',
@@ -50,8 +49,7 @@ export class ConfiguraionListComponent implements OnInit {
     private stringify: StringifyService,
     private datePipe: DatePipe,
     private router : Router,
-    private dialog: MatDialog,
-    private testService: BlockService) {
+    private dialog: MatDialog) {
   }
 
 
