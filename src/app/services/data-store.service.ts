@@ -42,6 +42,10 @@ export class DataStoreService {
         console.log("configuration:", id);
         return this.allConfigurations.getValue().filter(config=>config.id==id);
     }
+    public getDelta(id: number){
+        console.log("delta:", id);
+        return this.allDelta.getValue().filter(delta=>delta.id==id)[0];
+    }
 
     public getDeltaList(id: number){
         return this.allDelta.getValue().filter(config=>config.config_id==id);

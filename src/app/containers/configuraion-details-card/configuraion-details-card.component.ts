@@ -10,7 +10,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { catchError, distinctUntilChanged, filter, map, switchMap, switchMapTo, takeUntil, tap } from "rxjs/operators";
-import { ViewBlockRawUnitComponent } from "./../view-block-raw-unit/view-block-raw-unit.component";
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
 import { Subject, BehaviorSubject, Observable, combineLatest } from "rxjs";
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
@@ -18,21 +17,17 @@ import { ITS_JUST_ANGULAR } from '@angular/core/src/r3_symbols';
 
 export interface IViewUnitDialogData {
   unit: any;
+  readonly: boolean;
 }
 @Component({
   selector: 'app-configuraion-details-card',
   templateUrl: './configuraion-details-card.component.html',
-  styleUrls: ['./configuraion-details-card.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),]
+  styleUrls: ['./configuraion-details-card.component.scss']
 })
 export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
   /** Synce Data */
   private destroyed$ = new Subject<boolean>();
+  public action: boolean;
   public arrayOfKeys: string[] = [];
   public arrayOfJsons: any;
   public arrayOfRoles: any;
@@ -47,7 +42,7 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
   isTableExpanded = false;
 
 
-  constructor(public dialogRef: MatDialogRef<ViewBlockRawUnitComponent>,
+  constructor(public dialogRef: MatDialogRef<ConfiguraionDetailsCardComponent>,
     private dataService: DataService,
     private dataStoreService: DataStoreService,
     public stringifyService: StringifyService,
@@ -55,14 +50,12 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.arrayOfJsons = this.data.unit;
-    console.log("ss:", this.arrayOfJsons);
-    this.arrayOfOrigins = JSON.parse(JSON.stringify(this.arrayOfJsons));
-
-    console.log("jones:", this.arrayOfJsons);
+    console.log("data:", this.arrayOfJsons, this.data.unit);
+    this.action = this.data.readonly;
     this.arrayOfRoles = new MatTableDataSource<IRole>(this.arrayOfJsons.techData.roles);
-    // delete this.arrayOfJsons.tx;
-    // this.arrayOfKeys = Object.keys(this.data.unit);
 
+    this.arrayOfOrigins = JSON.parse(JSON.stringify(this.arrayOfJsons));
+   
   }
 
 
@@ -127,7 +120,6 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
       meta = true;
     }
     if (meta) delta.change["meta"] = metaData;
-    console.log("res:", delta)
     return (tech || meta) ? delta : null;
   }
   public update() {

@@ -15,6 +15,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit,OnDestroy 
 import { Subject, combineLatest, Observable, BehaviorSubject, config } from "rxjs";
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { map, filter, tap } from 'rxjs/operators';
+import { DeltaDetailsCardComponent } from '../delta-details-card/delta-details-card.component';
 import { ConfiguraionDetailsCardComponent } from "./../configuraion-details-card/configuraion-details-card.component";
 @Component({
   selector: 'app-view-configuration-unit',
@@ -106,15 +107,36 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
   }
   public updateConfiguration() {
     console.log(this.appInfo)
-    this.openDialog(this.appInfo, true);
+    this.openConfigDialog(this.appInfo, false);
 
   }
   // should show the delta
-  public showDelta(unit: any) {
-    this.openDialog(this.appInfo);
+  public showDelta(id: any) {
+    console.log("id:", id);
+    const delta = this.dataStoreService.getDelta(id);
+    const result = {
+      id: this.appInfo.id,
+      name: delta.change.meta?.name? delta.change.meta.name: this.appInfo.name,
+      ...delta
+    }
+    this.openDeltaDialog(result);
   }
-  // action = false: readonly
-  public async openDialog(unit: any, action = false) {
+
+  public async openDeltaDialog(unit: any) {
+    // this.loadingStates.blockRawUnit = true;
+    // // let detailedUnit: IBlockRawUnit | any;
+    // if (unit?.hash !== undefined) {
+    //   detailedUnit = await this.dataService.loadBlockRawUnit(unit.hash);
+    // }
+    // this.loadingStates.blockRawUnit = false;
+    const dialogRef = this.dialog.open(DeltaDetailsCardComponent, {
+      width: '80%',
+      data: { unit: unit || {}}
+    });
+
+  }
+
+  public async openConfigDialog(unit: any, readonly = true) {
     // this.loadingStates.blockRawUnit = true;
     // // let detailedUnit: IBlockRawUnit | any;
     // if (unit?.hash !== undefined) {
@@ -123,7 +145,7 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
     // this.loadingStates.blockRawUnit = false;
     const dialogRef = this.dialog.open(ConfiguraionDetailsCardComponent, {
       width: '80%',
-      data: { unit: unit || {}, readonly: action ? false : true }
+      data: { unit: unit || {}, readonly: readonly}
     });
 
   }

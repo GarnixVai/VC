@@ -12,13 +12,15 @@ import { DatePipe } from '@angular/common';
 import { ViewConfigurationUnitComponent } from './containers/view-configuration-unit/view-configuration-unit.component';
 import { ConfiguraionDetailsCardComponent } from './containers/configuraion-details-card/configuraion-details-card.component';
 import { ConfiguraionListComponent } from './containers/configuraion-list/configuraion-list.component';
+import { DeltaDetailsCardComponent } from './containers/delta-details-card/delta-details-card.component';
 @NgModule({
   declarations: [
     AppComponent,
     ViewBlockRawUnitComponent,
     ViewConfigurationUnitComponent,
     ConfiguraionDetailsCardComponent,
-    ConfiguraionListComponent
+    ConfiguraionListComponent,
+    DeltaDetailsCardComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,10 @@ import { ConfiguraionListComponent } from './containers/configuraion-list/config
     BrowserAnimationsModule,
     HttpClientJsonpModule
   ],
-  entryComponents: [ViewBlockRawUnitComponent, ConfiguraionDetailsCardComponent],
+  entryComponents: [
+    ViewBlockRawUnitComponent, 
+    ConfiguraionDetailsCardComponent,
+    DeltaDetailsCardComponent],
   providers: [
     DatePipe
   ],

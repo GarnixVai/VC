@@ -1,8 +1,6 @@
 <div class="content">
     <div class="app-information">
       <h3> General Information </h3>
-      <div>test: {{ (currentConfiguration | async)?.latestChange}}</div>
-      <!-- <div>test: {{ (selectedConfiguration | async)?.latestChange}}</div> -->
       <table class="general">
         <tr class="item">
           <th> Name </th>
@@ -51,7 +49,7 @@
         
         
               <tr mat-header-row *matHeaderRowDef="deltaColDef"></tr>
-              <tr mat-row *matRowDef="let row; columns: deltaColDef;" class="element-row" (click)="showDelta(row)"></tr>
+              <tr mat-row *matRowDef="let row; columns: deltaColDef;" class="element-row" (click)="showDelta(row.id)"></tr>
             </table>
             <mat-paginator class="paging" [pageSizeOptions]="[15, 10, 20]" showFirstLastButtons></mat-paginator>
           </div>

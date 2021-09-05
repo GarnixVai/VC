@@ -9,14 +9,8 @@ export class StringifyService {
 
   public formalizeBlockRawUnit(s: string): string{
     switch(s){
-      case "prev_block":
-        s = "previous_block";
-        break;
-      case "n_tx":
-        s = "Tx";
-        break;
-      case "mrkl_root":
-        s = "merkle_root";
+      case "name":
+        s = "Application";
         break;
       default:
         break;
