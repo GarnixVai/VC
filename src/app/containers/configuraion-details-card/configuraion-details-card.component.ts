@@ -17,7 +17,7 @@ import { ITS_JUST_ANGULAR } from '@angular/core/src/r3_symbols';
 
 export interface IViewUnitDialogData {
   unit: any;
-  readonly: boolean;
+  action: boolean;
 }
 @Component({
   selector: 'app-configuraion-details-card',
@@ -44,6 +44,7 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
 
   constructor(public dialogRef: MatDialogRef<ConfiguraionDetailsCardComponent>,
     private dataService: DataService,
+    private datePipe: DatePipe,
     private dataStoreService: DataStoreService,
     public stringifyService: StringifyService,
     @Inject(MAT_DIALOG_DATA) public data: IViewUnitDialogData) { }
@@ -51,11 +52,11 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.arrayOfJsons = this.data.unit;
     console.log("data:", this.arrayOfJsons, this.data.unit);
-    this.action = this.data.readonly;
+    this.action = this.data.action;
     this.arrayOfRoles = new MatTableDataSource<IRole>(this.arrayOfJsons.techData.roles);
 
     this.arrayOfOrigins = JSON.parse(JSON.stringify(this.arrayOfJsons));
-   
+
   }
 
 
@@ -79,12 +80,15 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
     const newTech = this.arrayOfJsons.techData.roles;
     const oldInfo = this.arrayOfOrigins;
     const newInfo = this.arrayOfJsons;
+    const today = new Date();
+
+    const time = this.stringifyService.formateDateTime(today);
 
     var delta: IDelta = {
       config_id: config_id,
       editor: this.arrayOfJsons.metaData.configManager,
       message: this.message,
-      timestamp: new Date(),
+      timestamp: time,
       change: {}
     };
 
@@ -125,13 +129,59 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
   public update() {
     const res = this.compareObject();
     if (res) {
-      this.arrayOfOrigins =  JSON.parse(JSON.stringify(this.arrayOfJsons));
+      this.arrayOfOrigins = JSON.parse(JSON.stringify(this.arrayOfJsons));
+      console.log("new one:", this.arrayOfJsons);
       this.dataStoreService.saveDelta(res);
+
+      // update delta
+      this.dataService.saveDelta(res).subscribe({
+        next: () => {
+          console.log("sucess!");
+          this.updateConfig();
+          // this.dataService.loadAllDeltaData();
+        },
+        error: () => {
+          console.error();
+        }
+      });
       this.close();
       // this.dataService.saveDelta(res);
     } else {
-      alert("You haven't update any data.")
+      alert("You didn't change any data.")
     }
+
+  }
+
+  public updateConfig(){
+          // update config
+        console.log("update one:", this.arrayOfJsons);
+        this.dataService.updateConfig(this.arrayOfJsons, this.arrayOfJsons.id).subscribe({
+          next: () => {
+            console.log("sucess!")
+            // this.dataService.loadAllDeltaData();
+          },
+          error: () => {
+            console.error();
+          }
+        });
+  }
+
+  public create(){
+    console.log("create one:", this.arrayOfJsons, this.arrayOfJsons.techData.roles[0].permission.split(","));
+    this.arrayOfJsons.techData.roles.map(el => { 
+      return {permission: el.permission.length > 1 ? el.permission?.split(",").map(item=>item.trim()): "", ...el}});
+
+    this.dataStoreService.saveConfig(this.arrayOfJsons);
+    this.dataService.saveConfig(this.arrayOfJsons).subscribe({
+      next: () => {
+        console.log("sucess!")
+        this.dataService.loadAllConfigurations();
+        this.dialogRef.close();
+      },
+      error: () => {
+        console.error();
+      }
+    });
 
   }
 

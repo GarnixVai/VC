@@ -47,7 +47,6 @@ export class DeltaDetailsCardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.arrayOfJsons = this.data.unit;
-    console.log("delta:", this.arrayOfJsons);
     // this.arrayOfRoles = new MatTableDataSource<IRole>(this.data.unit.);
     // this.arrayOfRoles = this.arrayOfJsons.change.techData;
     if(this.arrayOfJsons.change.techData){

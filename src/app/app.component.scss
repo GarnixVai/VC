@@ -1,0 +1,26 @@
+$hover-color: rgb(247, 199, 199);
+a {
+  color: white;
+}
+mat-icon {
+  color: white;
+}
+
+.home {
+  opacity: 0.7;
+  display: flex;
+  justify-content: baseline;
+}
+.home:hover {
+  color: $hover-color;
+}
+
+.create {
+  margin-right: 5%;
+  width: 10%;
+  display: flex;
+  justify-content: flex-end;
+}
+.create:hover {
+  color: $hover-color;
+}

@@ -39,7 +39,7 @@ export interface IDelta{
     config_id: number,
     editor: string,
 	message?: String,
-	timestamp: Date,
+	timestamp: Date | string,
 	id?: number,
 	change: {
 		tech?: ITechData,

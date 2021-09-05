@@ -67,12 +67,13 @@ export class ConfiguraionListComponent implements OnInit {
       //   for (let i of e) {
       //     console.log("ub E:", i);
         
-      //     i.latestChange = this.stringify.secondsToDateTime(i.latestChange);
+      //     i.latestChange = this.stringify.stringToDateTime(i.latestChange);
       //   }
       //   return e;
       // }),
       tap((result)=>{
         this.data = new MatTableDataSource<IConfiguration>(result);
+        this.data.paginator = this.paginator;
       })
     ).subscribe();
 
@@ -94,9 +95,11 @@ export class ConfiguraionListComponent implements OnInit {
     //   })
     // ).subscribe();
 
-
-    this.dataService.loadMockConfigData();
-    this.dataService.loadMockDeltaData();
+    this.dataService.loadAllConfigurations();
+    setTimeout(()=> this.dataService.loadAllDeltaData(), 1000)
+    // this.dataService.loadMockConfigData();
+    // this.dataService.loadAllDeltaData();
+    // this.dataService.loadMockDeltaData();
      
   }
   public viewConfiguration(unit: IConfiguration){

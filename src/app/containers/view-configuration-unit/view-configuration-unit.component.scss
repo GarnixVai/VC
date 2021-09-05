@@ -1,16 +1,29 @@
 h3 {
+  color: rgb(131, 130, 130);
+}
+.delta-list {
+  width: 80%;
+  margin-top: 5em;
+}
+.app-information {
+  width: 80%;
+}
+.title{
+  display: flex;
+  flex-direction: row;
+  button{
+    margin-left: 1em;
     color: rgb(131, 130, 130);
   }
-.delta-list{
-    width: 80%;
-    margin-top: 5em;
+  mat-icon:hover {
+    color: rgb(177, 51, 51);
+    background-color: #f1ebeb;
+ 
+  }
 }
-.app-information{
-    width: 80%;
-}
-.general{
-    width: 100%;
-table {
+.general {
+  width: 100%;
+  table {
     border-spacing: 3px !important;
     width: 100%;
     border: 1px solid rgb(131, 130, 130);
@@ -28,6 +41,6 @@ table {
     text-align: left;
     color: #666565;
     border-bottom: 1px solid rgb(170, 168, 168);
+  }
 }
 
-}

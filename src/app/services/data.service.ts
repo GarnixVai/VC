@@ -14,61 +14,74 @@ export class DataService {
   constructor(private http: HttpClient,
     private dataStore: DataStoreService) {
   }
-  private API = "http://127.0.0.1:5000/api/v1/resources/drivers/all";
 
-  public fetchMockConfigData(): Observable<any> {
-    console.log("service");
-    return this.http.get('/assets/data/mockConfigData.json');
+  public loadAllConfigurations():void{
+    this.http.get<IConfiguration[] | any>(`api/v1/configurationList`).pipe(
+      /** temporarily for mocking database */
+      map(result => {
+        const exist = this.dataStore.allConfigurations.getValue();
+        if (exist.length) return exist;
+        else return result;
+      }),
+      tap(result => this.dataStore.allConfigurations.next(result)),
+      catchError(this.handleError)
+    ).subscribe();
   }
-
-  public fetchMockDeltaData(): Observable<any> {
-    return this.http.get('/assets/data/mockDeltaData.json');
+  public loadAllDeltaData(): void {
+    this.http.get<IDelta[]>(`api/v1/deltaList`).pipe(
+      /** temporarily for mocking database */
+      tap(console.log),
+      map(result => {
+        const exist = this.dataStore.allDelta.getValue();
+        if (exist.length) return exist;
+        else return result;
+      }),
+      tap(result => this.dataStore.allDelta.next(result)),
+      catchError(this.handleError)
+    ).subscribe();
   }
-
-    public loadMockConfigData(): void {
+  public loadMockConfigData(): void {
     this.http.get<IConfiguration[]>(`/assets/data/mockConfigData.json`).pipe(
       /** temporarily for mocking database */
-        map(result=>{
-            const exist = this.dataStore.allConfigurations.getValue();
-            if(exist.length) return exist;
-            else return result;
-        }),
-        tap(result => this.dataStore.allConfigurations.next(result)),
-        catchError(this.handleError)
-    ).subscribe();
-}
-
-    public loadMockDeltaData(): void {
-    this.http.get<IDelta[]>(`/assets/data/mockDeltaData.json`).pipe(
-          /** temporarily for mocking database */
-          map(result=>{
-            const exist = this.dataStore.allDelta.getValue();
-            if(exist.length) return exist;
-            else return result;
-        }),
-        tap(result => this.dataStore.allDelta.next(result)),
-        catchError(this.handleError)
-    ).subscribe();
-}
-  public testDrive(){
-    return this.http.get<any>(`api/v1/resources/drivers/all`).pipe(
+      map(result => {
+        const exist = this.dataStore.allConfigurations.getValue();
+        if (exist.length) return exist;
+        else return result;
+      }),
+      tap(result => this.dataStore.allConfigurations.next(result)),
       catchError(this.handleError)
-    )
+    ).subscribe();
+  }
+
+  public loadMockDeltaData(): void {
+    this.http.get<IDelta[]>(`/assets/data/mockDeltaData.json`).pipe(
+      /** temporarily for mocking database */
+      map(result => {
+        const exist = this.dataStore.allDelta.getValue();
+        if (exist.length) return exist;
+        else return result;
+      }),
+      tap(result => this.dataStore.allDelta.next(result)),
+      catchError(this.handleError)
+    ).subscribe();
   }
 
   public saveDelta(delta: IDelta): Observable<IDelta> {
     return this.http.post<IDelta>("api/v1/delta", delta);
   }
-
-  public saveConfig(config: IConfiguration): Observable<IConfiguration>{
-    return this.http.post<IConfiguration>("api/v1/configuration", config);
+  public updateConfig(config: IConfiguration, id: number):Observable<IConfiguration> {
+    return this.http.post<any>(`api/v1/configuration/${id}`, config);
   }
 
-//   public loadBlockRawUnit(id: string) {
-//     return this.http.get<IBlockRawUnit>(`https://blockchain.info/rawblock/${id}`).pipe(
-//       catchError(this.handleError)
-//     ).toPromise();
-//   }
+  public saveConfig(config: IConfiguration): Observable<IConfiguration> {
+    return this.http.post<IConfiguration>("api/v1/configurations", config);
+  }
+
+  //   public loadBlockRawUnit(id: string) {
+  //     return this.http.get<IBlockRawUnit>(`https://blockchain.info/rawblock/${id}`).pipe(
+  //       catchError(this.handleError)
+  //     ).toPromise();
+  //   }
 
 
   private handleError(error: HttpErrorResponse) {

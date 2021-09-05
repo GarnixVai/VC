@@ -2,14 +2,14 @@
   <div class="toolbar" role="banner">
     <!-- <h2>Blockchain Project</h2>
     <h2> {{name}} </h2> -->
-    <div class="switch-box">
-      <div><a [routerLink]="['']">Home</a></div>
-      <button>New Application</button>
+    <div class="home">
+      <div><a [routerLink]="['']"><mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon></a></div>
     </div>
     <!-- <div class="search-box">
       <input type="text">
       <div>Search</div>
     </div> -->
+    <div class="create"><button mat-icon-button (click)="createApp()"><mat-icon>create</mat-icon>Create</button></div>
   </div>
 </div>
 

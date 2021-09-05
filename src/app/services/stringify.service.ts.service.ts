@@ -19,8 +19,14 @@ export class StringifyService {
       return res.join(" "); 
   }
 
-  public secondsToDateTime(t){
+  public stringToDateTime(t): string{
     const d = new Date(parseInt(t));
-    return this.datePipe.transform(d, "dd-MM h:mm:ss");
+    const res = this.datePipe.transform(d, "dd-MM-Y h:mm:ss")
+    return res? res: "";
+  }
+  public formateDateTime(t):  string{
+    const d = new Date(t);
+    const res = this.datePipe.transform(d, "dd-MM-Y h:mm:ss")
+    return res? res: "";
   }
 }
