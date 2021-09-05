@@ -1,0 +1,33 @@
+h3 {
+    color: rgb(131, 130, 130);
+  }
+.delta-list{
+    width: 80%;
+    margin-top: 5em;
+}
+.app-information{
+    width: 80%;
+}
+.general{
+    width: 100%;
+table {
+    border-spacing: 3px !important;
+    width: 100%;
+    border: 1px solid rgb(131, 130, 130);
+    height: 100%;
+  }
+  tr:nth-child(even) {
+    background-color: #f6f4f4;
+  }
+  tr.item td {
+    border-bottom: 1px solid rgb(170, 168, 168);
+    color: #7a6464;
+  }
+  th {
+    width: 30%;
+    text-align: left;
+    color: #666565;
+    border-bottom: 1px solid rgb(170, 168, 168);
+}
+
+}

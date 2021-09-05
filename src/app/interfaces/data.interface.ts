@@ -3,7 +3,9 @@ export interface IConfiguration {
     id: number,
     name: string,
     owner: string,
-    latestChange: Date
+    latestChange: Date,
+    metaData?: IMetaData,
+    techData?: ITechData
 }
 // for display table
 export interface ITableConfiguration {
@@ -38,9 +40,9 @@ export interface IDelta{
     editor: string,
 	message?: String,
 	timestamp: Date,
-	id: number,
+	id?: number,
 	change: {
-		tech: ITechData | null,
-		meta: IMetaData // always have editor
+		tech?: ITechData,
+		meta?: IMetaData // always have editor
 	}
 }

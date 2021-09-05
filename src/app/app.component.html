@@ -11,35 +11,6 @@
       <div>Search</div>
     </div> -->
   </div>
-
-  <div class="mat-elevation-z8 content accent" role="main">
-    <table mat-table #table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="hash">
-        <th class="w-40" mat-header-cell *matHeaderCellDef> HASH </th>
-        <td mat-cell *matCellDef="let element"> {{element.hash}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="height">
-        <th class="w-20" mat-header-cell *matHeaderCellDef> Height </th>
-        <td mat-cell *matCellDef="let element"> {{element.height}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="time">
-        <th class="w-20" mat-header-cell *matHeaderCellDef> Time </th>
-        <td mat-cell *matCellDef="let element"> {{element.time}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="block_index">
-        <th class="w-20" mat-header-cell *matHeaderCellDef> Index </th>
-        <td mat-cell *matCellDef="let element"> {{element.block_index}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="colDef"></tr>
-      <tr mat-row *matRowDef="let row; columns: colDef;" class="element-row" (click)="openDialog(row)"></tr>
-    </table>
-    <mat-paginator class="paging" [pageSizeOptions]="[15, 10, 20]" showFirstLastButtons></mat-paginator>
-  </div>
 </div>
 
-<div id="cover-spin" *ngIf="loadingStates.blockRawUnit">
-</div>
+<router-outlet></router-outlet>

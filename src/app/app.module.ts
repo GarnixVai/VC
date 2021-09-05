@@ -9,10 +9,16 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientJsonpModule } from "@ang
 import { ViewBlockRawUnitComponent } from './containers/view-block-raw-unit/view-block-raw-unit.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { DatePipe } from '@angular/common';
+import { ViewConfigurationUnitComponent } from './containers/view-configuration-unit/view-configuration-unit.component';
+import { ConfiguraionDetailsCardComponent } from './containers/configuraion-details-card/configuraion-details-card.component';
+import { ConfiguraionListComponent } from './containers/configuraion-list/configuraion-list.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ViewBlockRawUnitComponent
+    ViewBlockRawUnitComponent,
+    ViewConfigurationUnitComponent,
+    ConfiguraionDetailsCardComponent,
+    ConfiguraionListComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +29,7 @@ import { DatePipe } from '@angular/common';
     BrowserAnimationsModule,
     HttpClientJsonpModule
   ],
-  entryComponents: [ViewBlockRawUnitComponent],
+  entryComponents: [ViewBlockRawUnitComponent, ConfiguraionDetailsCardComponent],
   providers: [
     DatePipe
   ],

@@ -1,0 +1,66 @@
+div {
+    flex: 1;
+  }
+  .mat-dialog-actions {
+    justify-content: flex-end;
+  }
+  
+  h3 {
+    margin-top: 5%;
+    color: #797979;
+
+  }
+  .container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    font-family: Andale Mono, monospace;
+    .general{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+  }
+  
+  .techData {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    table {
+      font-family: Andale Mono, monospace;
+      width: 100%;
+      border: none;
+      td.mat-cell {
+        /* row border */
+        border: none;
+        cursor: pointer;
+       }
+
+      .w40 {
+        flex: 0 0 40% !important;
+        width: 40% !important;
+      }
+      .w20 {
+        flex: 0 0 20% !important;
+        width: 20% !important;
+      }
+    }
+      
+    td:not(.transaction-expanded-row):hover {
+        background: whitesmoke;
+      }
+    
+    td:not(.transaction-expanded-row):active {
+    background: #efefef;
+    }
+  }
+
+.message{
+    width: 90%;
+    .paragraph{
+        width: 100%;
+    }
+}
+  

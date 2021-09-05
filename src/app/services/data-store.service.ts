@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs";
 import {map, filter} from "rxjs/operators";
 import { IConfiguration, ITableConfiguration, IMetaData, ITechData, IRole, IDelta } from "../interfaces/data.interface";
@@ -7,7 +8,7 @@ import { IConfiguration, ITableConfiguration, IMetaData, ITechData, IRole, IDelt
     providedIn: "root"
 })
 
-export class DataStoreService{
+export class DataStoreService {
     public allConfigurations: BehaviorSubject<IConfiguration[]> = new BehaviorSubject<IConfiguration[]>([]); 
     public allDelta: BehaviorSubject<IDelta[]> = new BehaviorSubject<IDelta[]>([]);
     public configurationList: BehaviorSubject<ITableConfiguration[]> = new BehaviorSubject<ITableConfiguration[]>([]);
@@ -26,11 +27,12 @@ export class DataStoreService{
     }
 
     public getConfiguration(id: number){
-        return this.configurationList.getValue().filter(config=>config.id===id);
+        console.log("configuration:", id);
+        return this.allConfigurations.getValue().filter(config=>config.id==id);
     }
 
     public getDeltaList(id: number){
-
+        return this.allDelta.getValue().filter(config=>config.config_id==id);
     }
 
 }
