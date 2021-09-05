@@ -14,7 +14,7 @@ export class DataService {
   constructor(private http: HttpClient,
     private dataStore: DataStoreService) {
   }
-  private API = "https://blockchain.info/blocks?format=json";
+  private API = "http://127.0.0.1:5000/api/v1/resources/drivers/all";
 
   public fetchMockConfigData(): Observable<any> {
     console.log("service");
@@ -27,6 +27,12 @@ export class DataService {
 
     public loadMockConfigData(): void {
     this.http.get<IConfiguration[]>(`/assets/data/mockConfigData.json`).pipe(
+      /** temporarily for mocking database */
+        map(result=>{
+            const exist = this.dataStore.allConfigurations.getValue();
+            if(exist.length) return exist;
+            else return result;
+        }),
         tap(result => this.dataStore.allConfigurations.next(result)),
         catchError(this.handleError)
     ).subscribe();
@@ -34,15 +40,29 @@ export class DataService {
 
     public loadMockDeltaData(): void {
     this.http.get<IDelta[]>(`/assets/data/mockDeltaData.json`).pipe(
+          /** temporarily for mocking database */
+          map(result=>{
+            const exist = this.dataStore.allDelta.getValue();
+            if(exist.length) return exist;
+            else return result;
+        }),
         tap(result => this.dataStore.allDelta.next(result)),
         catchError(this.handleError)
     ).subscribe();
 }
-//   public testDrive(){
-//     return this.http.get<any>(`http://127.0.0.1:5000/api/v1/resources/drivers/all`).pipe(
-//       catchError(this.handleError)
-//     )
-//   }
+  public testDrive(){
+    return this.http.get<any>(`api/v1/resources/drivers/all`).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  public saveDelta(delta: IDelta): Observable<IDelta> {
+    return this.http.post<IDelta>("api/v1/delta", delta);
+  }
+
+  public saveConfig(config: IConfiguration): Observable<IConfiguration>{
+    return this.http.post<IConfiguration>("api/v1/configuration", config);
+  }
 
 //   public loadBlockRawUnit(id: string) {
 //     return this.http.get<IBlockRawUnit>(`https://blockchain.info/rawblock/${id}`).pipe(
