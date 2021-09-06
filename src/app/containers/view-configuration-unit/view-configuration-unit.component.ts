@@ -67,7 +67,6 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy, AfterV
 
     this.selectedConfiguration.pipe(
       takeUntil(this.destroyed$),
-      // this.dataService.load()
       tap(() => {
         // this.dataStoreService.getConfiguration(this.id)
       })

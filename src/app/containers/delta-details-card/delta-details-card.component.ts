@@ -2,14 +2,9 @@ import { IDelta, IRole, IMetaData, IConfiguration } from './../../interfaces/dat
 import { DataService } from './../../services/data.service';
 import { DataStoreService } from 'src/app/services/data-store.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { trigger, state, style, animate, transition } from '@angular/animations';
 import { StringifyService } from 'src/app/services/stringify.service.ts.service';
-import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { catchError, distinctUntilChanged, filter, map, switchMap, switchMapTo, takeUntil, tap } from "rxjs/operators";
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
 
 
@@ -44,8 +39,6 @@ export class DeltaDetailsCardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.arrayOfJsons = this.data.unit;
-    // this.arrayOfRoles = new MatTableDataSource<IRole>(this.data.unit.);
-    // this.arrayOfRoles = this.arrayOfJsons.change.techData;
     if(this.arrayOfJsons.change.techData){
       this.techChange = true;
       this.arrayOfRoles = new MatTableDataSource<IRole>(this.arrayOfJsons.change.techData.roles);
@@ -59,7 +52,6 @@ export class DeltaDetailsCardComponent implements OnInit, AfterViewInit {
         this.arrayOfMetaKeys.splice(index, 1);
       }
      }
-    // console.log("data:", this.arrayOfJsons,  this.arrayOfRoles);
   }
 
   close(){

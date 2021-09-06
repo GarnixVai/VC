@@ -62,24 +62,6 @@ export class ConfiguraionListComponent implements OnInit {
       })
     ).subscribe();
 
-  /**
-   * Main Table Content
-   */
-    // this.dataService.fetchMockConfigData().pipe(
-    //   takeUntil(this.destroyed$),
-    //   map((e) => {
-    //     for (let i of e) {
-    //       const d = new Date(parseInt(i.latestChange));
-    //       i.latestChange = this.datePipe.transform(d, "dd-MM h:mm:ss");
-    //     }
-    //     return e;
-    //   }),
-    //   tap(result => {
-    //     this.data = new MatTableDataSource<IConfiguration>(result);
-    //     // this.dataSource.paginator = this.paginator;
-    //   })
-    // ).subscribe();
-
     this.dataService.loadAllConfigurations();
     setTimeout(()=> this.dataService.loadAllDeltaData(), 1000)
     // this.dataService.loadMockConfigData();
