@@ -2,18 +2,13 @@ import { takeUntil } from 'rxjs/operators';
 import { IDelta, IConfiguration } from './../../interfaces/data.interface';
 import { DataService } from './../../services/data.service';
 import { DataStoreService } from 'src/app/services/data-store.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { trigger, state, style, animate, transition } from '@angular/animations';
 import { StringifyService } from 'src/app/services/stringify.service.ts.service';
-import { DatePipe } from '@angular/common';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-
-// import { ViewBlockRawUnitComponent } from "./../view-block-raw-unit/view-block-raw-unit.component";
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit,OnDestroy , Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
 import { Subject, combineLatest, Observable, BehaviorSubject, config } from "rxjs";
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { map, filter, tap } from 'rxjs/operators';
 import { DeltaDetailsCardComponent } from '../delta-details-card/delta-details-card.component';
 import { ConfiguraionDetailsCardComponent } from "./../configuraion-details-card/configuraion-details-card.component";
@@ -23,7 +18,7 @@ import { ConfiguraionDetailsCardComponent } from "./../configuraion-details-card
   styleUrls: ['./view-configuration-unit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
+export class ViewConfigurationUnitComponent implements OnInit, OnDestroy, AfterViewInit {
   public data: any;
   public id: number;
   public appInfo: any;
@@ -40,16 +35,18 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
   public selectedConfiguration: BehaviorSubject<IConfiguration | null> = new BehaviorSubject<IConfiguration | null>(null);
 
   public currentDelta: Observable<IDelta[]> = this.dataStoreService.allDelta.pipe(
-    map(()=> this.dataStoreService.getDeltaList(this.id))
+    map(()=> this.dataStoreService.getDeltaList(this.id)),
+    tap((result)=> {
+      const data = new MatTableDataSource<IDelta>(result);
+      data.paginator = this.paginator;
+      return data;
+    })
   )
-
-  // public selectedConfiguration = this.currentConfiguration.pipe(
-  //   map(tenants => tenants.filter(tenant => tenant.noted))
-  // );
 
   // Display table
   public readonly deltaColDef = ["editor", "message", "time"];
-
+  // Pagination
+  @ViewChild(MatPaginator) paginator: any;
   constructor(
     private dataService: DataService,
     private dataStoreService: DataStoreService,
@@ -91,7 +88,6 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
     } else {
       this.appInfo = this.appInfo[0];
       this.appInfo.latestChange = this.appInfo.latestChange;
-      // this.appInfo.latestChange = this.datePipe.transform(d, "dd-MM h:mm:ss");
       this.deltaList.forEach(element => {
         element.time = element.timestamp;
       });
@@ -107,6 +103,7 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
   // should show the delta
   public showDelta(id: any) {
     const delta = this.dataStoreService.getDelta(id);
+    console.log("d:", delta);
     const result = {
       id: this.appInfo.id,
       name: delta.change.meta?.name? delta.change.meta.name: this.appInfo.name,
@@ -133,6 +130,14 @@ export class ViewConfigurationUnitComponent implements OnInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.complete();
 
+  }
+  ngAfterViewInit() {
+    this.currentDelta.pipe(
+      tap((result: any)=>{
+        result.paginator = this.paginator;
+        return result; 
+      })
+    );
   }
 
 

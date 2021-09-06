@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import {Component, OnDestroy, OnInit} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs";
 import {map, filter} from "rxjs/operators";
 import { IConfiguration, ITableConfiguration, IMetaData, ITechData, IRole, IDelta } from "../interfaces/data.interface";

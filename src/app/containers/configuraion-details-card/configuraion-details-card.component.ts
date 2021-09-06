@@ -2,18 +2,12 @@ import { IDelta, IRole, IMetaData, IConfiguration } from './../../interfaces/dat
 import { DataService } from './../../services/data.service';
 import { DataStoreService } from 'src/app/services/data-store.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { trigger, state, style, animate, transition } from '@angular/animations';
 import { StringifyService } from 'src/app/services/stringify.service.ts.service';
 import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { catchError, distinctUntilChanged, filter, map, switchMap, switchMapTo, takeUntil, tap } from "rxjs/operators";
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
 import { Subject, BehaviorSubject, Observable, combineLatest } from "rxjs";
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { ITS_JUST_ANGULAR } from '@angular/core/src/r3_symbols';
 
 export interface IViewUnitDialogData {
   unit: any;
@@ -51,7 +45,6 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.arrayOfJsons = this.data.unit;
-    console.log("data:", this.arrayOfJsons, this.data.unit);
     this.action = this.data.action;
     this.arrayOfRoles = new MatTableDataSource<IRole>(this.arrayOfJsons.techData.roles);
 
@@ -96,7 +89,6 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
     // techData
     for (var key in oldTech) {
       if (JSON.stringify(newTech[key]) !== JSON.stringify(oldTech[key])) {
-        console.log("key:", key, newTech[key], oldTech[key]);
         if (!delta.change.tech) {
           delta.change["tech"] = {
             config_id: config_id,
@@ -130,7 +122,6 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
     const res = this.compareObject();
     if (res) {
       this.arrayOfOrigins = JSON.parse(JSON.stringify(this.arrayOfJsons));
-      console.log("new one:", this.arrayOfJsons);
       this.dataStoreService.saveDelta(res);
 
       // update delta
@@ -167,11 +158,18 @@ export class ConfiguraionDetailsCardComponent implements OnInit, AfterViewInit {
   }
 
   public create(){
-    console.log("create one:", this.arrayOfJsons, this.arrayOfJsons.techData.roles[0].permission.split(","));
-    this.arrayOfJsons.techData.roles.map(el => { 
-      return {permission: el.permission.length > 1 ? el.permission?.split(",").map(item=>item.trim()): "", ...el}});
+    const roles = this.arrayOfJsons.techData.roles.map(el => { 
+      // console.log(el.permission.length , el.permission?.split(",").map(item=>item.trim()))
+      const  p = el.permission.length > 1 ? el.permission?.split(",").map(item=>item.trim()): "";
+      return {
+        permission: p,
+        name: el.name
+      }
+    });
+    console.log(roles);
+    this.arrayOfJsons.techData.roles = roles;
 
-    this.dataStoreService.saveConfig(this.arrayOfJsons);
+    console.log("reo:", this.arrayOfJsons.techData.roles);
     this.dataService.saveConfig(this.arrayOfJsons).subscribe({
       next: () => {
         console.log("sucess!")

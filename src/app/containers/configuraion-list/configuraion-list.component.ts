@@ -2,14 +2,14 @@ import { IConfiguration, IDelta } from './../../interfaces/data.interface';
 import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { DataService } from "./../../services/data.service";
 import { DataStoreService } from "./../../services/data-store.service";
-import { BehaviorSubject, combineLatest, EMPTY, Observable, of, Subject } from "rxjs";
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from "rxjs";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { takeUntil, tap, map } from "rxjs/operators";
+import { tap, map } from "rxjs/operators";
 import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { StringifyService } from 'src/app/services/stringify.service.ts.service';
 @Component({
   selector: 'app-configuraion-list',
@@ -55,20 +55,7 @@ export class ConfiguraionListComponent implements OnInit {
 
   // set up
   ngOnInit(): void {
-
-    // this.testService.testDrive().subscribe(res=>{
-    //   console.log("dd:", res);
-    // })
-
     this.configurations.pipe(
-      // map((e) => {
-      //   for (let i of e) {
-      //     console.log("ub E:", i);
-        
-      //     i.latestChange = this.stringify.stringToDateTime(i.latestChange);
-      //   }
-      //   return e;
-      // }),
       tap((result)=>{
         this.data = new MatTableDataSource<IConfiguration>(result);
         this.data.paginator = this.paginator;
@@ -102,7 +89,6 @@ export class ConfiguraionListComponent implements OnInit {
   }
   public viewConfiguration(unit: IConfiguration){
     this.router.navigate(["/configure", unit.id]);
-    // this.router.navigateByUrl('/configure', { state: unit } );
   }
 
   ngOnDestroy(): void {

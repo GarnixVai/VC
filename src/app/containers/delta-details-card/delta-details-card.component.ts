@@ -11,9 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { catchError, distinctUntilChanged, filter, map, switchMap, switchMapTo, takeUntil, tap } from "rxjs/operators";
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, AfterViewInit } from "@angular/core";
-import { Subject, BehaviorSubject, Observable, combineLatest } from "rxjs";
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { ITS_JUST_ANGULAR } from '@angular/core/src/r3_symbols';
+
 
 export interface IViewUnitDialogData {
   unit: any;
@@ -60,7 +58,6 @@ export class DeltaDetailsCardComponent implements OnInit, AfterViewInit {
       if(index > -1){
         this.arrayOfMetaKeys.splice(index, 1);
       }
-      console.log("meta:", this.arrayOfMeta, this.arrayOfMetaKeys);
      }
     // console.log("data:", this.arrayOfJsons,  this.arrayOfRoles);
   }

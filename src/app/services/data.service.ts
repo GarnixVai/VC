@@ -4,7 +4,6 @@ import { Observable, throwError } from "rxjs";
 import { IConfiguration, IDelta } from "../interfaces/data.interface";
 import { DataStoreService } from './data-store.service';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import axios from 'axios';
 
 @Injectable({
   providedIn: 'root'
@@ -17,25 +16,12 @@ export class DataService {
 
   public loadAllConfigurations():void{
     this.http.get<IConfiguration[] | any>(`api/v1/configurationList`).pipe(
-      /** temporarily for mocking database */
-      map(result => {
-        const exist = this.dataStore.allConfigurations.getValue();
-        if (exist.length) return exist;
-        else return result;
-      }),
       tap(result => this.dataStore.allConfigurations.next(result)),
       catchError(this.handleError)
     ).subscribe();
   }
   public loadAllDeltaData(): void {
     this.http.get<IDelta[]>(`api/v1/deltaList`).pipe(
-      /** temporarily for mocking database */
-      tap(console.log),
-      map(result => {
-        const exist = this.dataStore.allDelta.getValue();
-        if (exist.length) return exist;
-        else return result;
-      }),
       tap(result => this.dataStore.allDelta.next(result)),
       catchError(this.handleError)
     ).subscribe();
@@ -76,13 +62,6 @@ export class DataService {
   public saveConfig(config: IConfiguration): Observable<IConfiguration> {
     return this.http.post<IConfiguration>("api/v1/configurations", config);
   }
-
-  //   public loadBlockRawUnit(id: string) {
-  //     return this.http.get<IBlockRawUnit>(`https://blockchain.info/rawblock/${id}`).pipe(
-  //       catchError(this.handleError)
-  //     ).toPromise();
-  //   }
-
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
